@@ -26,4 +26,6 @@ static NSInteger NUM_ROWS = 4;
 }
 @property (nonatomic, strong) XJ1024Grid        *   grid;
 
+
++ (CCScene *)sceneWithConfig:(NSDictionary *)config;
 @end

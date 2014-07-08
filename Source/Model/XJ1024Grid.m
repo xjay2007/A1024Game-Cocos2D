@@ -154,8 +154,13 @@
         while ([self indexValidWithColumn:currentX row:currentY]) {
             // get tile at current index
             XJ1024Tile *tile = [self tileAtColumn:currentX row:currentY];
-            if ([tile isEqual:self.noTile] || (self.isZeroFixed && [tile isKindOfClass:[XJ1024Tile class]] && tile.value == 0)) {
+            if ([tile isEqual:self.noTile]) {
                 // if there is no tile at this index -> skip
+                currentY += yChange;
+                continue;
+            }
+            if (self.isZeroFixed && tile.value == 0) {
+                NSLog(@"zero value tile");
                 currentY += yChange;
                 continue;
             }

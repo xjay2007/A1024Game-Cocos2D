@@ -17,30 +17,24 @@
 @end
 
 @implementation SceneGame
++ (CCScene *)sceneWithConfig:(NSDictionary *)config {
+    SceneGame *node = (SceneGame *)[CCBReader load:@"SceneGame"];
+    node.grid = [XJ1024Grid gridWithConfig:config];
+    CCScene *scene = [CCScene node];
+    [scene addChild:node];
+    return scene;
+}
 
 - (void)didLoadFromCCB {
-    NSDictionary *config = @{
-                             GRID_NUM_COLUMNS_KEY: @(NUM_COLUMNS),
-                             GRID_NUM_ROWS_KEY: @(NUM_ROWS),
-                             GRID_NUM_START_TILES_KEY: @3,
-                             GRID_NUM_TARGET_VALUE_KEY: @1024,
-                             GRID_NUM_ZERO_VALUE_KEY: @1};
-    self.grid = [XJ1024Grid gridWithConfig:config];
-    
-    _nodeGrid.grid = self.grid;
     _nodeGrid.positionStart = TILE_START_POSITION;
     _nodeGrid.tileWidth = TILE_WIDTH;
     _nodeGrid.tileHeight = TILE_HEIGHT;
-    
-    [self.grid addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew context:NULL];
-}
-
-- (void)dealloc
-{
-    [self.grid removeObserver:self forKeyPath:@"score"];
 }
 
 - (void)onEnter {
+    
+    [self.grid addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew context:NULL];
+    
     [super onEnter];
     
     [self addSwipeGestureRecognizer];
@@ -53,6 +47,19 @@
     [self removeSwipeGestureRecognizer];
     
     [super onExit];
+    
+    [self.grid removeObserver:self forKeyPath:@"score"];
+}
+
+- (void)setGrid:(XJ1024Grid *)grid {
+    if (_grid != grid) {
+        [_grid removeObserver:self forKeyPath:@"score"];
+        _grid = grid;
+        
+        _nodeGrid.grid = _grid;
+        
+        [_grid addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew context:NULL];
+    }
 }
 
 - (void)gameStart {
@@ -170,5 +177,14 @@
     if ([keyPath isEqual:@"score"] && object == self.grid) {
         [self updateScore];
     }
+}
+
+#pragma mark - Menu
+- (void)onBack:(id)sender {
+    [[CCDirector sharedDirector] replaceScene:[CCBReader loadAsScene:@"SceneMenu"]];
+}
+
+- (void)onReset:(id)sender {
+    
 }
 @end

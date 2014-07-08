@@ -13,6 +13,10 @@
     CCSprite            *   _sprCard;
     CCLabelTTF          *   _labelValue;
     CCNodeColor         *   _nodeColorBg;
+    
+    CCSprite            *   _sprMouth;
+    CCSprite            *   _sprEyeLeft;
+    CCSprite            *   _sprEyeRight;
 }
 @property(nonatomic, assign) NSInteger               value;
 - (CCActionInterval *)actionMergeToValue:(NSInteger)value;
