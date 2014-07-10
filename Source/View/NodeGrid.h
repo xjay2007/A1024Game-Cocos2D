@@ -20,4 +20,6 @@
 
 - (void)animateSpawnTiles:(NSArray *)tiles completion:(dispatch_block_t)completion;
 - (void)animateMoveTiles:(NSArray *)moves completion:(dispatch_block_t)completion;
+
+- (void)resetNodeGrid;
 @end

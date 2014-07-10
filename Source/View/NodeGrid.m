@@ -19,6 +19,12 @@
     
 }
 
+- (void)resetNodeGrid {
+    [self unscheduleAllSelectors];
+    [self stopAllActions];
+    [self removeAllChildren];
+}
+
 - (void)animateSpawnTiles:(NSArray *)tiles completion:(dispatch_block_t)completion {
     
     CCTime duration = 0.15;

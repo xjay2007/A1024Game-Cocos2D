@@ -270,6 +270,17 @@
     }
     return NO;
 }
+#pragma mark - Reset
+- (void)resetGrid {
+    for (NSInteger i = 0; i < self.numColumns; ++i) {
+        for (NSInteger j = 0; j < self.numRows; ++j) {
+            self.arrTiles[i][j] = self.noTile;
+        }
+    }
+    self.score = 0;
+    self.highestValue = 0;
+    self.movedTileThisRound = NO;
+}
 #pragma mark - Helper
 - (XJ1024Tile *)tileAtColumn:(NSInteger)column row:(NSInteger)row {
     if (![self indexValidWithColumn:column row:row]) {

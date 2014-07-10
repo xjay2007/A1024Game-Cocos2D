@@ -37,8 +37,12 @@ static NSString *const GRID_IS_ZERO_FIXED_KEY = @"isZeroFixed";
 - (NSArray *)moveTilesWithDirection:(UISwipeGestureRecognizerDirection)direction;
 - (BOOL)movedTileThisRound;
 
+#pragma mark - Round
 - (void)nextRound;
 - (BOOL)isMovePossible;
+
+#pragma mark - Reset
+- (void)resetGrid;
 
 #pragma mark - Helper
 - (XJ1024Tile *)tileAtColumn:(NSInteger)column row:(NSInteger)row;

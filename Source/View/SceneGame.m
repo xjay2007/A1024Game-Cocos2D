@@ -31,9 +31,12 @@
     _nodeGrid.tileHeight = TILE_HEIGHT;
 }
 
+- (void)dealloc
+{
+    [self.grid removeObserver:self forKeyPath:@"score"];
+}
+
 - (void)onEnter {
-    
-    [self.grid addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew context:NULL];
     
     [super onEnter];
     
@@ -47,13 +50,12 @@
     [self removeSwipeGestureRecognizer];
     
     [super onExit];
-    
-    [self.grid removeObserver:self forKeyPath:@"score"];
 }
 
 - (void)setGrid:(XJ1024Grid *)grid {
     if (_grid != grid) {
         [_grid removeObserver:self forKeyPath:@"score"];
+        _grid = nil;
         _grid = grid;
         
         _nodeGrid.grid = _grid;
@@ -134,7 +136,7 @@
 - (void)nextRound {
     if (self.grid.movedTileThisRound) {
         if (self.grid.highestValue == self.grid.targetValue) {
-            [self win];
+            [self showWin];
         } else {
             [self.grid nextRound];
             XJ1024Tile *newTile = [self.grid spawnRandomTile];
@@ -144,27 +146,30 @@
                     //
                     [self enableSwipeGestureRecognizer:YES];
                 } else {
-                    [self lose];
+                    [self showLose];
                 }
             }];
         }
     }
 }
 
-- (void)win {
+- (void)showWin {
     NSLog(@"win");
     
     [self resetScene];
 }
 
-- (void)lose {
+- (void)showLose {
     NSLog(@"Lose");
     
     [self resetScene];
 }
 
 - (void)resetScene {
-    [[CCDirector sharedDirector] replaceScene:[CCBReader loadAsScene:@"SceneGame"]];
+    [self.grid resetGrid];
+    [_nodeGrid resetNodeGrid];
+    
+    [self gameStart];
 }
 
 #pragma mark - UI
